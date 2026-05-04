@@ -1,7 +1,15 @@
-FROM node:18-slim
-WORKDIR /usr/src/app
-# Create a basic package file to handle the express dependency
-RUN npm init -y && npm install express
-COPY app.js .
-EXPOSE 3000
+FROM node:20
+
+WORKDIR /app
+
+# 1. Copy ONLY the manifest files first
+COPY package*.json ./
+
+# 2. Install ALL dependencies (including axios and express)
+RUN npm install
+
+# 3. Copy the rest of the code (app.js, tests/, public/, etc.)
+COPY . .
+
+# 4. Default command to start the game
 CMD ["node", "app.js"]
