@@ -32,6 +32,8 @@ docker build -t rpg-game .
 Launch the server and map it to port 3000. Once running, visit http://localhost:3000 in your browser.
 Bash
 
+** LOGIN INFO USERNAME IS test@game.com and PASSWORD is password123
+
 docker run -it --rm --name rpg-game -p 3000:3000 rpg-game
 
 Running the Automated Test Suite
