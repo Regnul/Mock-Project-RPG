@@ -2,6 +2,38 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+// ==========================================
+// ITEM 4: SPECIALIZED TESTING ACCOMMODATIONS
+// ==========================================
+
+// 1. Simulated Network Latency Middleware
+app.use((req, res, next) => {
+    const simulatedLatency = req.headers['x-simulate-latency'];
+    if (simulatedLatency) {
+        const delayMs = parseInt(simulatedLatency, 10) || 0;
+        return setTimeout(next, delayMs);
+    }
+    next();
+});
+
+// 2. System Performance Metrics Endpoint
+app.get('/debug/perf', (req, res) => {
+    const memoryMetrics = process.memoryUsage();
+    res.status(200).json({
+        status: 'healthy',
+        timestamp: Date.now(),
+        uptime: process.uptime(),
+        memory: {
+            heapUsedMb: (memoryMetrics.heapUsed / 1024 / 1024).toFixed(2),
+            heapTotalMb: (memoryMetrics.heapTotal / 1024 / 1024).toFixed(2),
+            rssMb: (memoryMetrics.rss / 1024 / 1024).toFixed(2)
+        }
+    });
+});
+
+// ==========================================
+// STANDARD MIDDLEWARE & STATIC ASSETS
+// ==========================================
 app.use(express.json());
 
 // Serve static assets from the public directory
