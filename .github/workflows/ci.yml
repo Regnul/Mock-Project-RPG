@@ -16,5 +16,13 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Run Unit and Integration Tests
+      - name: Run Core Test Suite
         run: npm test
+
+      - name: Run Specialized Automated Load Test
+        run: |
+          node app.js &
+          SERVER_PID=$!
+          sleep 2
+          node tests/stress.test.js
+          kill $SERVER_PID
