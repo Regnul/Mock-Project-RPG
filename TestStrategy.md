@@ -30,7 +30,7 @@ Authentication: Validating email/password submission and successful identity con
 
 
 
-Profile Management: Validating the 1-to-many relationship where one account holds multiple independent game session files.
+Profile Management: Validating the 1-to-many relationship where one account holds multiple independent game session files (as profiles are dummy accounts this is not explored at this time).
 
 
 
@@ -76,7 +76,7 @@ Docker: The Mock Web UI and API are contained within a Docker environment (node:
 
 
 
-Automation: Unit tests are AI-generated as most basic implementations required to validate account user actions, character movement, and save-state logic.
+Automation: Unit tests are AI-generated as most basic implementations required to validate account user actions, character movement, and save-state logic (at this point that is persistent).
 
 
 
@@ -108,7 +108,7 @@ Collision Testing: Specific coordinates (e.g., 50, 50) are designated for static
 
 
 
-Functional Coverage: Pass/Fail responses must satisfy all unit test requirements for login, profile switching, and 3D movement.
+Functional Coverage: Pass/Fail responses must satisfy all unit test requirements for login, profile selection and 3D movement.
 
 
 

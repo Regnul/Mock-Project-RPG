@@ -1,5 +1,15 @@
 RPG Mock Web Service and Testing Suite
 
+## 🗺️ Project Repository Navigation Index
+
+| Phase / Artifact Description | Documentation Link | Automated Test File |
+| :--- | :--- | :--- |
+| **Core API & Integration Routing** | `README.md` | `tests/app.test.js` (or your core suite) |
+| **Common Production Vulnerabilities** | [`production_issues.md`](./production_issues.md) | *N/A (Architectural Gaps)* |
+| **Target Configuration Matrices** | [`test_configurations.md`](./test_configurations.md) | *N/A (Hardware/OS Matrix)* |
+| **High-Concurrency Load Suite** | [`specialized_manual_testing.md`](./specialized_manual_testing.md) | [`tests/stress.test.js`](./tests/stress.test.js) |
+| **CI/CD Pipeline Workflow** | [`.github/workflows/ci.yml`](./.github/workflows/ci.yml) | *Automated Pipeline Runner* |
+
 A mock backend for this 2D RPG, featuring a 2000x2000 navigable world, automated testing pipelines, and Docker containerization.
 Prerequisites
 

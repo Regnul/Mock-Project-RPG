@@ -1,0 +1,36 @@
+CI Troubleshooting and Reflection
+
+Throughtout the class I had to make a few adjustments to the CI/CD pipeline to accomodate the expanded testing types and coverage on what I was implementing
+
+What I noticed was that it became easier to fail old tests as the frameworks used employed additional uses of the same basic features. This led to frequent updates to the github .yml and the node.js file in order to keep all tests properly aligned. 
+
+This seemed like a challenge which would grow as a project aged. I felt that on a real team that there would likely be a role entirely focused on keeping the tests up to date to ensure passes and failures were accurate. I also found that the AI use here was good at designing tests and at fixing specific issues 
+
+around test failure, but it was not good at anticipating these problems. AI is so much more capable than it was even 2 years ago but there is still a big issue around it's focus on satisfying users rather than completely solving a problem. It often needs to be "chastised" before it reveals contrary information. 
+
+
+This issue with AI is something that I had awareness of before this class but after seeing what it would attempt to gloss over in favor of delivering a single satisfying answer or conclusion made me want to approach problems with it in a less comprehensive way rather than a more complete way. I would prefer to be 
+
+able to use AI in multiple isolated sessions rather than have it continue to retain all past sessions as it tends to do now. I was often told details for its reasoning that were based on very old past chats rather than on current information. I worry that the consumer focused purpose of AI right now makes
+
+using the public models difficult for serious work. I imagine there are models in more serious places that do not contain as much focus on satisfying the user. I would like to find those models- I hear claude has a less aim-to-please approach to the work we did here than Gemini or GPT.
+
+
+
+I have also reviewed my work so far in light of the most recent reading we were assigned. I understand that with a mock project that is limited to what we can do in this class setting that there are aspects of product testing which can't be meaningfully explored. For my project this included many pre-release activities 
+
+and some post-release ones. What seems most unexplored for me are topics like security on the web, threat vectors, localization and operational excellence. For that last point the issue I came up against near the end is that I see that the next step for me would be to assess network connection quality with 
+
+the rendering activity for a user. Even if I moved as much as possible onto the local hardware, there are things which would need to be carefuly looked at regarding animation timing and clock-speed if local hardware became the basis for running the game. 
+
+Overall, I learned the most about the CI/CD pipeline and how it would be stood up and maintained. Having used github for personal reasons in the past, this was never really a part of what I had cared about and I see that it will be what is most looked for when working in a team setting. Thats what I'm taking 
+
+away from the class more than any other testing topic. The introduction to containerization was also very helpful as I am familiar with VM's and UAT environments but was not aware of how sandbox-y a container could allow me to be as quickly as it was able to be configured. 
+
+
+I plan to take what I've learned and try and make a little game that is more aligned with the kind of tools and resources a more traditional application might use. When I look at what might make a more fleshed out web game tested and maintainable, I can see that there are completetly different concerns on the web 
+
+when compared to a local gaming experience. The web and its dependancies themselves can change pretty fast but there are still many open-source tools available to help users. I've explored using a few other public github projects and reading through their changelogs to see what they may have seen as necessary to 
+
+update with respect to maintaining a project over time. 
+
