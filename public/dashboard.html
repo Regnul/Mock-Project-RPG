@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Mock Service: Live Diagnostics</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121214;
+            color: #e2e8f0;
+            margin: 0;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #3b82f6;
+            border-bottom: 2px solid #27272a;
+            padding-bottom: 10px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .card {
+            background-color: #1c1c1f;
+            border: 1px solid #27272a;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .card h3 {
+            margin: 0 0 10px 0;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .metric {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #f8fafc;
+        }
+        .status-good {
+            color: #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>System Diagnostics Dashboard</h1>
+        <p>Live server-side telemetry generated from automated monitoring hooks.</p>
+        
+        <div class="grid">
+            <div class="card">
+                <h3>API Status</h3>
+                <div id="status" class="metric status-good">Connecting...</div>
+            </div>
+            <div class="card">
+                <h3>System Uptime</h3>
+                <div id="uptime" class="metric">0s</div>
+            </div>
+            <div class="card">
+                <h3>Heap Memory Used</h3>
+                <div id="memory" class="metric">0.00 MB</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function fetchTelemetry() {
+            try {
+                const response = await fetch('/debug/perf');
+                const data = await response.json();
+                
+                document.getElementById('status').innerText = data.status.toUpperCase();
+                document.getElementById('uptime').innerText = Math.floor(data.uptime) + 's';
+                document.getElementById('memory').innerText = data.memory.heapUsedMb + ' MB';
+            } catch (error) {
+                document.getElementById('status').innerText = 'OFFLINE';
+                document.getElementById('status').className = 'metric';
+                document.getElementById('status').style.color = '#ef4444';
+            }
+        }
+
+        // Poll the monitoring endpoint every 2 seconds
+        setInterval(fetchTelemetry, 2000);
+        fetchTelemetry();
+    </script>
+</body>
+</html>

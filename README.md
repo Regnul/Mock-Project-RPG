@@ -44,6 +44,10 @@ Bash
 
 docker run -it --rm --name rpg-game -p 3000:3000 rpg-game
 
+App Health Dashboard - http://localhost:3000/dashboard.html
+
+Username : test@game.command   Password: password123  // dummy values
+
 Running the Automated Test Suite
 
 The project includes a dual-tier testing strategy that validates Auth, Profiles, and Movement logic.
