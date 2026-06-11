@@ -34,3 +34,50 @@ when compared to a local gaming experience. The web and its dependancies themsel
 
 update with respect to maintaining a project over time. 
 
+--------------------------------------------
+
+After running AI over what it thought a reflection might be (since its not an industry document) I was amused to see it turned some of my past problems into "incidents" - which is what I deal with at work. I thought it would be fun to share them. 
+
+# RPG Mock Service: Post-Mortem Logs & Architecture Decision Records (ADR)
+
+This document serves as the repository's operational maintenance log. It contains formal engineering post-mortems for pipeline failures encountered during deployment, alongside production Architecture Decision Records (ADRs).
+
+---
+
+## 1. INCIDENT POST-MORTEM: AUTOMATED PIPELINE TIMEOUTS
+* **Incident Date:** June 2026
+* **Severity:** Medium (Blocked CI/CD Release Loop)
+* **Status:** Resolved
+
+### 1.1 Problem Description
+The original continuous integration build script utilized traditional manual container commands to spin up, copy, and execute validation scripts inside an active container environment. The workflow relied on executing "docker cp test.js rpg-running:/usr/src/app/test.js" followed by "docker exec rpg-running node test.js". 
+
+While this execution pattern succeeded on isolated local developer workstations, pushing this sequential pattern to individual headless GitHub Actions runners caused structural hangs. Because the cloud runner environment could not cleanly manage the lifecycle of the detached container thread asynchronously, the step locked up and hit the maximum pipeline runtime timeout limit.
+
+### 1.2 Root Cause Analysis (RCA)
+Headless virtualization platforms require synchronous exit signals to tear down virtual testing steps. The runner script did not programmatically hook into the underlying container execution PID, leaving the network socket open and blocking the build environment from shutting down.
+
+### 1.3 Corrective Action / Resolution
+The automated workflow definition (.github/workflows/ci.yml) was updated to decouple verification from interactive container execution. The application is now initialized directly within the runner instance as an isolated background worker via the "node app.js &" process flag. 
+
+By capturing the process ID immediate fallback (SERVER_PID=$!), the engineering pipeline now triggers a native system signal (kill $SERVER_PID) the exact millisecond downstream testing scripts complete. This guarantees clean environment teardown and prevents build freezes.
+
+---
+
+## 2. INCIDENT POST-MORTEM: ROUTE INTERCEPTION SYNTAX CRASH
+* **Incident Date:** June 2026
+* **Severity:** High (Broken E2E Performance Assertions)
+* **Status:** Resolved
+
+### 2.1 Problem Description
+During initial testing runs of the specialized high-concurrency automated load script (stress.test.js), the execution suite threw an unhandled fatal syntax error stating that the unexpected token "<" was not valid JSON.
+
+### 2.2 Root Cause Analysis (RCA)
+Review of the Express application layer revealed a route precedence conflict. The application’s static file middleware (app.use(express.static)) and catch-all roots were registered higher up in the execution file than the new diagnostic telemetry pathways. 
+
+When the automated load testing script fired requests at /debug/perf, Express intercepted the stream early and returned the client-side user interface homepage (index.html starting with HTML doctype syntax) instead of letting the request hit the JSON telemetry data block.
+
+### 2.3 Corrective Action / Resolution
+The core application layout inside app.js was refactored by hoisting all specialized telemetry middleware and the /debug/perf endpoint to the absolute top of the route instantiation stack. Insulating these diagnostic channels from static asset handlers completely resolved the content negotiation conflict, enabling clean JSON stream parsing under load.
+
+---
